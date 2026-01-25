@@ -703,6 +703,107 @@ class Solutions:
                 boxs[(r // 3) * 3 + (c // 3)][num] = 1
         return True
 
+    def leetcode54(self, matrix: List[List[int]]):
+        l = 0
+        r = len(matrix[0])-1
+        t = 0
+        b = len(matrix)-1
+        # 设置左右上下四个边界
+        res = []
+        while True:
+            for i in range(l,r+1,1):
+                res.append(matrix[t][i])
+
+            t += 1
+            # 从上读完一行后，上边界下移一位
+            if t > b:
+                break
+
+            for i in range(t,b+1,1):
+                res.append(matrix[i][r])
+
+            r -= 1
+            # 从右读完一列后，右边界左移一位
+            if r < l:
+                break
+
+            for i in range(r,l-1,-1):
+                res.append(matrix[b][i])
+            b -= 1
+            # 从下读完一行后，下边界上移一位
+            if t>b:
+                break
+
+            for i in range(b,t-1,-1):
+                res.append(matrix[i][l])
+
+            l += 1
+            # 从左读完一列后，左边界右移一位
+            if l>r:
+                break
+
+        #     终止条件为，左右边界交叉或者上下边界交叉
+        return res
+
+    def leetcode48(self, matrix: List[List[int]]):
+        # 这是个数学题，我们可以采用，想要达到效果 需要两步
+        # 转置矩阵
+        # reverse矩阵中的每一行
+        bound = len(matrix)
+        i = 0
+        j = 0
+        count = 0
+        while True:
+            if bound == 1:
+                break
+            while count < bound:
+                temp = matrix[i][j+count]
+                matrix[i][j+count] = matrix[i+count][j]
+                matrix[i+count][j] = temp
+                count += 1
+            bound -= 1
+            count = 0
+            i += 1
+            j += 1
+
+        for i in range(len(matrix)):
+            matrix[i].reverse()
+
+    def leetcode73(self, matrix: List[List[int]]):
+        len_r = len(matrix)
+        len_c = len(matrix[0])
+        # 检测初始值，0行0列是否有0
+        row0_has_zero = any(matrix[0][j] == 0 for j in range(len_c))
+        col0_has_zero = any(matrix[i][0] == 0 for i in range(len_r))
+
+
+        # 遍历除去0行0列的数组，如果为0
+        # 则把该数字所在的行头与列头都标记为0
+        for r in range(1,len_r):
+            for c in range(1,len_c):
+                if matrix[r][c] == 0:
+                    matrix[r][0] = 0
+                    matrix[0][c] = 0
+
+        for r in range(1,len_r):
+            if matrix[r][0] == 0:
+                # 根据0列标记，将对应的行重置为0
+                matrix[r] = [0] * len_c
+
+        for c in range(1,len_c):
+            if matrix[0][c] == 0:
+                # 根据0行标记，将对应的列重置为0
+                for r in range(len_r):
+                    matrix[r][c] = 0
+        # 最后处理0行0列
+        if row0_has_zero:
+            matrix[0] = [0] * len_c
+
+        if col0_has_zero:
+            for i in range(len_r):
+                matrix[i][0] = 0
+
+
 
 if __name__ == "__main__":
     sol = Solutions()
@@ -738,12 +839,10 @@ if __name__ == "__main__":
     # print(sol.leetcode3("abcabcbb"))
     # print(sol.leetcode76("aaaaaaaaaaaabbbbbcdd","abcdd"))
     # print(sol.leetcode30("wordgoodgoodgoodbestword",  ["word","good","best","good"]))
-    print(sol.leetcode36([["8","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"]
-,["4",".",".","8",".","3",".",".","1"]
-,["7",".",".",".","2",".",".",".","6"]
-,[".","6",".",".",".",".","2","8","."]
-,[".",".",".","4","1","9",".",".","5"]
-,[".",".",".",".","8",".",".","7","9"]]))
+    # print(sol.leetcode36([["8","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"] ,["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."] ,[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]))
+    # print(sol.leetcode54([[1,2,3],[4,5,6],[7,8,9]]))
+    # print(sol.leetcode48([[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]))
+    # print(sol.leetcode73([[0,1,2,0],[3,4,5,2],[1,3,1,5]]))
 
 
 
