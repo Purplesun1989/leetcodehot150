@@ -803,6 +803,93 @@ class Solutions:
             for i in range(len_r):
                 matrix[i][0] = 0
 
+    def leetcode289(self, board: List[List[int]]):
+        l_c = len(board[0])
+        l_r = len(board)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                counter = 0
+                # 上
+                if i >0 and board[i-1][j] in [1, 2]:
+                    counter += 1
+                # 下
+                if i+1 < l_r and board[i+1][j] in [1, 2]:
+                    counter += 1
+                # 左
+                if j>0 and board[i][j-1] in [1, 2]:
+                    counter += 1
+                # 右
+                if j+1 < l_c and board[i][j+1] in [1, 2]:
+                    counter += 1
+                # 左上
+                if i > 0 and j>0 and board[i-1][j-1] in [1, 2]:
+                    counter += 1
+                # 左下
+                if i+1 < l_r and j>0 and board[i+1][j-1] in [1, 2]:
+                    counter += 1
+        #         右上
+                if i>0 and j+1 < l_c and board[i-1][j+1] in [1, 2]:
+                    counter += 1
+        #         右下
+                if i+1 < l_r and j+1< l_c and board[i+1][j+1] in [1, 2]:
+                    counter += 1
+
+                if board[i][j] == 1 and (counter < 2 or counter > 3):
+                    board[i][j] = 2
+                if board[i][j] == 0 and counter == 3:
+                    board[i][j] = 3
+
+        for i in range(l_r):
+            for j in range(l_c):
+                if board[i][j] == 2:
+                    board[i][j] = 0
+                if board[i][j] == 3:
+                    board[i][j] = 1
+
+    def leetcode383(self, ransomNote: str, magazine: str):
+        mgz = {}
+
+        if len(ransomNote) > len(magazine):
+            return False
+        for c in magazine:
+            if c in mgz:
+                mgz[c] += 1
+            else:
+                mgz[c] = 1
+
+        for c in ransomNote:
+            if c in mgz and mgz[c] > 0:
+                mgz[c] -= 1
+            else:
+                return False
+
+        return True
+
+    def leetcode205(self, s: str, t: str):
+        hash_s = {}
+        hash_t = {}
+        ls = len(s)
+        lt = len(t)
+        if ls != lt:
+            return False
+        # 双向映射，abb cdd 为例
+        # a映射为c c同时映射为a
+        # b映射为d d同时映射为b
+        for i in range(ls):
+            if (s[i] not in hash_s) and ( t[i] not in hash_t):
+                hash_s[s[i]] = t[i]
+                hash_t[t[i]] = s[i]
+
+            elif (s[i] in hash_s) and ( t[i] in hash_t):
+                if hash_s[s[i]] == t[i] and hash_t[t[i]] == s[i]:
+                    continue
+                else:
+                    return False
+            else:
+                return False
+
+        return True
+
 
 
 if __name__ == "__main__":
@@ -843,6 +930,9 @@ if __name__ == "__main__":
     # print(sol.leetcode54([[1,2,3],[4,5,6],[7,8,9]]))
     # print(sol.leetcode48([[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]))
     # print(sol.leetcode73([[0,1,2,0],[3,4,5,2],[1,3,1,5]]))
+    # print(sol.leetcode289([[0,1,0],[0,0,1],[1,1,1],[0,0,0]]))
+    # print(sol.leetcode383("aa","aab"))
+    print(sol.leetcode205("bbbaaaba","aaabbbba"))
 
 
 
