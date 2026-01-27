@@ -889,6 +889,60 @@ class Solutions:
                 return False
 
         return True
+    def leetcode290(self, pattern: str, s: str):
+        hash_p = {}
+        hash_s = {}
+        s = s.split(" ")
+        len_s = len(s)
+        len_p = len(pattern)
+        if len_s != len_p:
+            return False
+        for i in range(len_s):
+            if (s[i] not in hash_s) and (pattern[i] not in hash_p):
+                hash_s[s[i]] = pattern[i]
+                hash_p[pattern[i]] = s[i]
+            elif (s[i] in hash_s) and (pattern[i] in hash_p):
+                if (hash_s[s[i]] == pattern[i]) and (hash_p[pattern[i]] == s[i]):
+                    continue
+                else:
+                    return False
+            else:
+                return False
+        return True
+    def leetcode242(self, s: str, t: str):
+        hash_s = {}
+        if len(s) != len(t):
+            return False
+        for c in s:
+            if c not in hash_s:
+                hash_s[c] = 1
+            else:
+                hash_s[c] += 1
+        for c in t:
+            if c not in hash_s:
+                return False
+            else:
+                hash_s[c] -= 1
+        for v in hash_s.values():
+            if v != 0:
+                return False
+        return True
+    def leetcode49(self, strs: List[str]):
+
+        res = {}
+        for s in strs:
+            key_list = [0] * 26
+            # 我们使用数组来记录每个单词中字符出现的频次
+            for c in s:
+                key_list[ord(c) - ord('a')] += 1
+            # 把不可hash可变的list变成不可变的tuple作为我们res hash的key
+            key_tuple = tuple(key_list)
+            if key_tuple not in res:
+                res[key_tuple] = []
+                res[key_tuple].append(s)
+            else:
+                res[key_tuple].append(s)
+        return list(res.values())
 
 
 
@@ -932,7 +986,10 @@ if __name__ == "__main__":
     # print(sol.leetcode73([[0,1,2,0],[3,4,5,2],[1,3,1,5]]))
     # print(sol.leetcode289([[0,1,0],[0,0,1],[1,1,1],[0,0,0]]))
     # print(sol.leetcode383("aa","aab"))
-    print(sol.leetcode205("bbbaaaba","aaabbbba"))
+    # print(sol.leetcode205("bbbaaaba","aaabbbba"))
+    # print(sol.leetcode290("abba","dog cat cat fish"))
+    # print(sol.leetcode242("anagram","nagaram"))
+    print(sol.leetcode49(["eat", "tea", "tan", "ate", "nat", "bat"]))
 
 
 
