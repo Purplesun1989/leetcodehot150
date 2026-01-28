@@ -944,6 +944,45 @@ class Solutions:
                 res[key_tuple].append(s)
         return list(res.values())
 
+    def leetcode1(self, nums: List[int], target: int):
+        hash_s = {}
+        res = []
+        for i in range(len(nums)):
+            if target-nums[i] not in hash_s:
+                hash_s[nums[i]] = i
+            else:
+                res.append(i)
+                res.append(hash_s[target-nums[i]])
+
+        return res
+
+    def leetcode202(self, n: int):
+        seen = []
+        while True:
+            t = 0
+            while n != 0:
+                digit = n % 10
+                t += digit * digit
+                n = n // 10
+            if t not in seen :
+                seen.append(t)
+                n = t
+            elif t == 1:
+                return True
+            else:
+                return False
+    def leetcode219(self, nums: List[int], k: int):
+        hash_s = {}
+        for i in range(len(nums)):
+            if nums[i] not in hash_s:
+                hash_s[nums[i]] = i
+            else:
+                if abs(i - hash_s[nums[i]]) <= k:
+                    return True
+                else:
+                    hash_s[nums[i]] = i
+        return False
+
 
 
 if __name__ == "__main__":
@@ -989,7 +1028,10 @@ if __name__ == "__main__":
     # print(sol.leetcode205("bbbaaaba","aaabbbba"))
     # print(sol.leetcode290("abba","dog cat cat fish"))
     # print(sol.leetcode242("anagram","nagaram"))
-    print(sol.leetcode49(["eat", "tea", "tan", "ate", "nat", "bat"]))
+    # print(sol.leetcode49(["eat", "tea", "tan", "ate", "nat", "bat"]))
+    # print(sol.leetcode1([3,2,4], 6))
+    # print(sol.leetcode202(19))
+    print(sol.leetcode219([1,0,1,1],1))
 
 
 
