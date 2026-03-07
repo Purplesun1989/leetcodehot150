@@ -983,6 +983,29 @@ class Solutions:
                     hash_s[nums[i]] = i
         return False
 
+    def leetcode128(self, nums: List[int]):
+        if not nums:
+            return 0
+        # 首先，排除空字符串
+        myset = set(nums)
+        # set化目的有两个，首先是去重，其次是每次查找元素的时间复杂度是O(1)
+        res = -1
+
+        for ele in myset:
+            cur_mx = 0
+            if ele-1 not in myset:
+                # 如果 ele-1 在我们的set里面，就说明当前ele不是任何一个可能序列的开头，所以跳过
+                temp = ele + 1
+                cur_mx += 1
+                while temp in myset:
+                    # 探测当前开头的长度
+                    cur_mx += 1
+                    temp += 1
+                if cur_mx >= res:
+                    res = cur_mx
+        #             维护全局最大值
+        return res
+
 
 
 if __name__ == "__main__":
@@ -1031,7 +1054,8 @@ if __name__ == "__main__":
     # print(sol.leetcode49(["eat", "tea", "tan", "ate", "nat", "bat"]))
     # print(sol.leetcode1([3,2,4], 6))
     # print(sol.leetcode202(19))
-    print(sol.leetcode219([1,0,1,1],1))
+    # print(sol.leetcode219([1,0,1,1],1))
+;
 
 
 
