@@ -1006,6 +1006,68 @@ class Solutions:
         #             维护全局最大值
         return res
 
+    def leetcode228(self, nums: List[int]):
+        res = []
+        i = 0
+        n = len(nums)
+        while i < n:
+            start = i  # 记录区间起点
+            # 向后寻找连续的终点
+            while i + 1 < n and nums[i + 1] == nums[i] + 1:
+                i += 1
+            # 此时 nums[i] 是区间的终点
+            if start == i:
+                res.append(str(nums[start]))
+            else:
+                res.append(f"{nums[start]}->{nums[i]}")
+            i += 1  # 准备开始寻找下一个区间
+        return res
+
+    def leetcode56(self, intervals: List[List[int]]):
+        intervals.sort(key = lambda x : x[0])
+        res = []
+        i = 0
+        while i < len(intervals):
+            start = intervals[i][0]
+            end = intervals[i][1]
+            # 维护当前终点为最大值
+            while i < len(intervals)-1 and end >= intervals[i+1][0]:
+                # 如果当前的终点比下一个区间的终点大，那么就合并下一个区间
+                end = max(end, intervals[i+1][1])
+                i += 1
+
+            ele = [start, end]
+            res.append(ele)
+            i += 1
+        return res
+
+    def leetcode57(self, intervals: List[List[int]], newInterval: List[int]):
+        res = []
+        i = 0
+        n = len(intervals)
+
+        while i < n and intervals[i][1] < newInterval[0]:
+            res.append(intervals[i])
+            i+=1
+
+        end = intervals[i][1]
+        start = intervals[i][0]
+
+        while i < n and intervals[i][0] <= newInterval[1]:
+            # 只要当前的开始时间 <= 新区间的结束时间，就有重叠
+            newInterval[0] = min(newInterval[0], intervals[i][0])
+            newInterval[1] = max(newInterval[1], intervals[i][1])
+            i += 1
+
+        res.append(newInterval)
+
+        while i < n :
+            res.append(intervals[i])
+            i += 1
+
+        return res
+
+
 
 
 if __name__ == "__main__":
@@ -1055,7 +1117,12 @@ if __name__ == "__main__":
     # print(sol.leetcode1([3,2,4], 6))
     # print(sol.leetcode202(19))
     # print(sol.leetcode219([1,0,1,1],1))
-;
+    # print(sol.leetcode228([0,2,3,4,6,8,10]))
+    # print(sol.leetcode56([[4,7],[1,4]]))
+    print(sol.leetcode57([[1,3],[6,9]],[2,5]))
+
+
+
 
 
 
